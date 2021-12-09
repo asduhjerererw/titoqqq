@@ -1,0 +1,28 @@
+const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
+const db = require("quick.db");
+
+module.exports = {
+    name: "deletehibachannel",
+    description: "Hiba szoba törlése",
+    aliases: ["deletehiba"],
+    permission: "",
+    category: "⚠️ Hiba",
+    usage: "deletehibachannel <csatorna>",
+    run: async(client, message, args) => {
+        if (!message.member.hasPermission("ADMINSTRATOR")) return message.delete()
+        let Channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
+
+        if (!Channel) return message.channel.send(`Kérlek jelölj meg egy csatornát!`);
+
+        if (Channel.type === "voice") return message.channel.send(`Kérlek egy íráson alapuló csatornát válassz!`);
+
+        await db.delete(`suggestion_${message.guild.id}`, Channel.id);
+
+        let Embed = new MessageEmbed()
+        .setColor("BLUE")
+        .setDescription(`Sikeres csatorna törlés (<#${Channel.id}>)`)
+
+        return message.channel.send(Embed);
+    }
+}
