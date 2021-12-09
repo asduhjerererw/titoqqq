@@ -2,7 +2,6 @@ const { default_prefix } = require("./config.json")
 const fetch = require("node-fetch");
 const db =require("quick.db");
 const { emotes , emoji} =require("./config.json")
-const token = require("./token.json")
 const discord = require("discord.js");
 const client = new discord.Client({
   disableEveryone: false
@@ -84,4 +83,4 @@ client.on("message", async message => {
   }
 })
 
-client.login(token.token);
+client.login(process.env.BOT_TOKEN);
